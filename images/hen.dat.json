@@ -1,0 +1,21 @@
+{"texture":[
+{
+  "attributes":{
+"compress":"TRUE"
+}
+}
+,
+{"stdregion":[
+{
+  "attributes":{
+"count":"10"
+,
+"width":"48"
+,
+"height":"20"
+,
+"units":"pixels"
+}
+}
+]}
+]}

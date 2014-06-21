@@ -1,0 +1,8 @@
+Chuckie Egg
+
+A game of skill for 1 to 4 players
+use the direction and jump keys to guide your man and collect a dozen eggs!
+
+You may redefine all direction keys but some combinations are not possible due to keyboard clashes. Just try another set
+
+Copyright (C) A&F Software 1983

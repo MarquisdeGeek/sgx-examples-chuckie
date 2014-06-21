@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Chuckie Egg</title>
+
+		<Script type="text/JavaScript" language="JavaScript" src="config.js"></script>
+		<Script type="text/JavaScript" language="JavaScript" src="storage.js"></script>
+		<Script type="text/JavaScript" language="JavaScript" src="rle.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="levellayouts.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="levelmgr.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="pch.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="rect.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="keyboard.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="levelstate.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="lifts.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="motherduck.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="audio.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="hens.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="farmer.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="player.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="game.js"></script>
+		<Script type="text/Javascript" language="JavaScript" src="highscores.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="gui.js"></script>
+		<script type="text/JavaScript" language="JavaScript" src="loader.js"></script>
+
+	</head>
+	
+	<!-- Setting an absolute position pulls the element out of the "flow" of the document and positions it regardless of the layout of surrounding elements. -->
+	<!-- An absolutely positioned element is always relative to either the next positioned parent or, if there isn't one, the body by default. -->
+	<body>
+		<div>
+		<p>Chuckie Egg (c) A&F Software 1983 -  ....Ported to Javascript/HTML5/SGX by Mark Lomas and Steven Goodwin. Distributed under the GNU General Public License.</p>
+		<div id="outerdiv" style="position:relative;left:0px;top:0px;">
+			<div id="gamediv" style="background-color:#000000;position:absolute;left:0px;top:0px;visibility:hidden;">
+				
+				<!-- Shift down start of absolute y coordinate to simplify positioning of images -->
+				<div style="position:absolute;left:0px;top:32px;">
+					<!-- Have another div here because firefox only does appendChild() and not insertAdjacentElement() and z-order doesnt appear to work properly. -->
+					<div id="maindiv" style="position:absolute;left:0px;top:0px;"></div>
+					<!-- Characters -->
+					<div id="characters" style="position:absolute;left:0px;top:0px;width:320px;height:224px;overflow:hidden;">
+						
+					</div>
+				</div>
+				<!-- Sound effects -->
+				<!-- Setting hidden="true" on the embed element mutes the sound so wrapper with invisible parent div element instead -->
+				<div id="audioDiv" style="visibility: hidden;">
+				</div>
+				<NOEMBED>
+				    <!-- This content will only be displayed if the browser doesn't support the EMBED HTML tag. -->
+				    <!-- <p><b>Embedded sounds are not supported by this browser.</b></p> -->
+				</NOEMBED>
+				
+			</div>
+		</div>
+		</div>
+		</div>
+		</div>
+		
+		<!-- This is the SGX code -->
+		<div align="center" id="game_screen">
+			<canvas id="SGXCanvas" width="200" height="200">
+				This browser does not support the HTML5 Canvas.
+			</canvas>
+			<br>
+			
+			<a href="#" onclick="javascript:mute(false);">Mute</a>
+			<a href="#" onclick="javascript:mute(true);">Un mute</a>
+			<br>
+			<b> Use the keys '<' and '>' to move left and right. 'A' and 'Z' for up and down. Space to jump</b>
+			
+			<!-- For Audio - you need these divs -->
+			<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+			<div id="jquery_jplayer_2" class="jp-jplayer"></div>
+			<div id="jquery_jplayer_3" class="jp-jplayer"></div>
+			<div id="jquery_jplayer_4" class="jp-jplayer"></div>
+			<div id="jquery_jplayer_5" class="jp-jplayer"></div>
+			<div id="jquery_jplayer_6" class="jp-jplayer"></div>
+			<div id="jquery_jplayer_7" class="jp-jplayer"></div>
+			<div id="jquery_jplayer_8" class="jp-jplayer"></div>
+			<div id="jquery_jplayer_9" class="jp-jplayer"></div>
+
+			<!-- For Audio - you need these scripts -->
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+			<script type="text/javascript" src="http://sgxengine.com/code/jpjs/jquery.jplayer.min.js"></script>
+
+			<!--  For standard SGX - use just this -->
+			<script type="text/javascript" src="http://sgxengine.com/code/sgx/sgx-3.1.1.min.js"></script>
+
+			<!-- Boiler plate SGX initialization follows -->
+			<script type="text/javascript">
+				function prepareOriginalDHTMLChuckie() {
+					load();
+					window.onkeydown=DownHandler;
+					window.onkeyup=UpHandler;
+				}
+				
+				function SGXPrepare_OS() {
+
+					new sgx.main.System();
+
+					sgx.graphics.Engine.create(320,256);     // the size of the draw area we (as programmers) will use
+					sgx.main.System.writePage();
+					sgx.main.System.initialize();
+				}				
+					
+				function SGXinit() {
+				}
+
+				function SGXstart() {
+					prepareOriginalDHTMLChuckie();
+					//mute(false);	// put this back if you find the audio as annoying as I do!
+				}
+
+				function SGXupdate(telaps) {
+					GUIUpdate();
+				}
+
+				function SGXdraw(telaps) {
+					var pSurface = CSGXDrawSurfaceManager.get().getDisplaySurface();
+				 
+					pSurface.setRenderTransform(null);		
+					pSurface.setFillTexture(NULL);
+					pSurface.setFillColor(sgxColorRGBA.Black);
+					pSurface.fillRect(NULL);
+
+					GUIDraw();
+				}
+
+				window.onload = SGXPrepare_OS;
+				window.onunload=unload;
+			</script>
+
+	</body>
+</html>
